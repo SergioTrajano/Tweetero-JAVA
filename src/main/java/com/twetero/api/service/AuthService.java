@@ -7,8 +7,6 @@ import com.twetero.api.dto.AuthDTO;
 import com.twetero.api.model.Auth;
 import com.twetero.api.repository.AuthRepository;
 
-import java.util.List;
-
 @Service
 public class AuthService {
     
@@ -17,9 +15,5 @@ public class AuthService {
 
     public void signUp(AuthDTO authData) {
         repository.save(new Auth(authData));
-    }
-
-    public List<Auth> signIn() {
-        return repository.findAll();
     }
 }
