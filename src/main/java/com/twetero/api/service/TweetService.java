@@ -14,6 +14,7 @@ import com.twetero.api.repository.TweetRepository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class TweetService {
@@ -29,7 +30,6 @@ public class TweetService {
 
         for(int i = 0; i < users.size(); i++) {
             if (Objects.equals(users.get(i).getUsername(), tweetData.username())) {
-                System.out.println("to aqui");
                 repository.save(new Tweet(tweetData, users.get(i).getAvatar()));
                 break;
             }
@@ -38,7 +38,12 @@ public class TweetService {
 
     public List<Tweet> findAll(int page) {
         Pageable pagination = PageRequest.of(page, 5, Sort.by("id").descending());
-        System.out.println(repository.findAll(pagination));
         return repository.findAll(pagination).getContent();
+    }
+
+    public List<Tweet> findByUsername(String username) {
+        List<Tweet> tweets = repository.findAll(Sort.by("id").descending());
+
+        return tweets.stream().filter(tweet -> Objects.equals(tweet.getUsername(), username)).collect(Collectors.toList());
     }
 }
